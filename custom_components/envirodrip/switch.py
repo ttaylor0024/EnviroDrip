@@ -59,7 +59,7 @@ class EnviroDripZoneSwitch(EnviroDripEntity, SwitchEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra attributes."""
-        attrs = super().extra_state_attributes
+        attrs = {}  # Initialize as an empty dictionary
         attrs.update({
             "zone_type": self._zone.get("zone_type", "lawn"),
             "duration": self._zone.get("duration", 15),
