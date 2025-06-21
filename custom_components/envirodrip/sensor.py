@@ -48,7 +48,7 @@ class EnviroDripGlobalSensor(EnviroDripEntity, SensorEntity):
         super().__init__(coordinator)
         self._sensor_type = sensor_type
         self._attr_unique_id = f"{coordinator.entry.entry_id}_{sensor_type}"
-        self._attr_name = f"EnviroDrip {SENSOR_TYPES[sensor_type]['name']}"
+        self._attr_name = SENSOR_TYPES[sensor_type]['name']
         
         if "unit" in SENSOR_TYPES[sensor_type]:
             self._attr_native_unit_of_measurement = SENSOR_TYPES[sensor_type]["unit"]
@@ -112,7 +112,8 @@ class EnviroDripZoneSensor(EnviroDripEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra attributes."""
-        attrs = {}  # Initialize as an empty dictionary
+        # This is the corrected implementation
+        attrs = {}
         attrs["zone_type"] = self._zone.get("zone_type", "lawn")
         attrs["flow_rate"] = self._zone.get("flow_rate", 10)
         attrs["schedule"] = self._zone.get("schedule", "06:00")
