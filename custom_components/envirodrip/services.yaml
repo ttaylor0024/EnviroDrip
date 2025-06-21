@@ -1,0 +1,48 @@
+run_zone:
+  name: Run Zone
+  description: Manually run irrigation for a specific zone
+  fields:
+    zone_id:
+      name: Zone
+      description: The zone entity to irrigate
+      required: true
+      selector:
+        entity:
+          integration: envirodrip
+          domain: switch
+    duration:
+      name: Duration
+      description: How long to run irrigation (minutes)
+      required: false
+      default: 15
+      selector:
+        number:
+          min: 1
+          max: 120
+          unit_of_measurement: min
+
+run_all_zones:
+  name: Run All Zones
+  description: Run irrigation for all enabled zones
+  fields:
+    test_mode:
+      name: Test Mode
+      description: Run each zone for only 1 minute
+      required: false
+      default: false
+      selector:
+        boolean:
+
+calculate_irrigation_need:
+  name: Calculate Irrigation Need
+  description: Recalculate irrigation requirements based on current weather
+  fields:
+    days_back:
+      name: Days to Consider
+      description: Number of days of history to consider
+      required: false
+      default: 7
+      selector:
+        number:
+          min: 1
+          max: 30
