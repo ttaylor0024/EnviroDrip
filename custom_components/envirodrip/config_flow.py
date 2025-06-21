@@ -63,11 +63,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 # Use HA location if not provided
                 if CONF_LATITUDE not in user_input:
-                    user_input[CONF_LATITUDE] = hass.config.latitude
+                    user_input[CONF_LATITUDE] = self.hass.config.latitude
                 if CONF_LONGITUDE not in user_input:
-                    user_input[CONF_LONGITUDE] = hass.config.longitude
+                    user_input[CONF_LONGITUDE] = self.hass.config.longitude
                 if CONF_ELEVATION not in user_input:
-                    user_input[CONF_ELEVATION] = hass.config.elevation or 0
+                    user_input[CONF_ELEVATION] = self.hass.config.elevation or 0
                 
                 info = await validate_input(self.hass, user_input)
                 user_input["zones"] = []  # Will be configured later
