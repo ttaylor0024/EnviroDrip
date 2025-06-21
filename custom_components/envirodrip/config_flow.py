@@ -14,9 +14,8 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.exceptions import HomeAssistantError
-import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers import selector  # <-- ADD THIS IMPORT
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import selector
 
 from .const import (
     CONF_ELEVATION,
@@ -63,11 +62,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 # Use HA location if not provided
-                if CONF_LATITUDE not in user_input:
+                if not user_input.get(CONF_LATITUDE):
                     user_input[CONF_LATITUDE] = self.hass.config.latitude
-                if CONF_LONGITUDE not in user_input:
+                if not user_input.get(CONF_LONGITUDE):
                     user_input[CONF_LONGITUDE] = self.hass.config.longitude
-                if CONF_ELEVATION not in user_input:
+                if not user_input.get(CONF_ELEVATION):
                     user_input[CONF_ELEVATION] = self.hass.config.elevation or 0
                 
                 info = await validate_input(self.hass, user_input)
@@ -109,7 +108,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_zones(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Manage zones. This has been updated to correctly add zones."""
+        """Manage zones."""
         if user_input is not None:
             # Combine new zone with existing zones
             new_options = self.config_entry.options.copy()
@@ -130,7 +129,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Coerce(int), vol.Range(min=1, max=120)
                 ),
                 # This is the corrected line that fixes the crash
-                vol.Optional("schedule"): selector.TimeSelector(),
+                vol.Optional("schedule", default="06:00:00"): selector.TimeSelector(),
                 vol.Optional("flow_rate", default=10): cv.positive_float,
             }
         )
