@@ -1,0 +1,51 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure EnviroDrip",
+        "description": "Set up your smart irrigation system",
+        "data": {
+          "name": "Name",
+          "weather_provider": "Weather Provider",
+          "api_key": "API Key",
+          "weather_entity": "Weather Entity (optional)",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "elevation": "Elevation (meters)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to weather API",
+      "invalid_auth": "Invalid API key",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "EnviroDrip Options",
+        "menu_options": {
+          "zones": "Configure Zones",
+          "weather": "Weather Settings",
+          "advanced": "Advanced Settings"
+        }
+      },
+      "zones": {
+        "title": "Zone Configuration",
+        "description": "Add or modify irrigation zones",
+        "data": {
+          "name": "Zone Name",
+          "entity_id": "Valve Entity",
+          "zone_type": "Zone Type",
+          "duration": "Default Duration (minutes)",
+          "schedule": "Schedule Time",
+          "flow_rate": "Flow Rate (L/min)"
+        }
+      }
+    }
+  }
+}
