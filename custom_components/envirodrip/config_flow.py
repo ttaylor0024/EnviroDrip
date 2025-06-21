@@ -128,7 +128,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Optional("duration", default=15): vol.All(
                     vol.Coerce(int), vol.Range(min=1, max=120)
                 ),
-                # This is the corrected line that fixes the crash
                 vol.Optional("schedule", default="06:00:00"): selector.TimeSelector(),
                 vol.Optional("flow_rate", default=10): cv.positive_float,
             }
