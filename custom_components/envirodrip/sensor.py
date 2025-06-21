@@ -112,7 +112,7 @@ class EnviroDripZoneSensor(EnviroDripEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return extra attributes."""
-        attrs = super().extra_state_attributes
+        attrs = {}  # Initialize as an empty dictionary
         attrs["zone_type"] = self._zone.get("zone_type", "lawn")
         attrs["flow_rate"] = self._zone.get("flow_rate", 10)
         attrs["schedule"] = self._zone.get("schedule", "06:00")
