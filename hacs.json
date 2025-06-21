@@ -1,0 +1,11 @@
+{
+  "name": "EnviroDrip",
+  "content_in_root": false,
+  "render_readme": true,
+  "homeassistant": "2024.1.0",
+  "domains": ["sensor", "switch"],
+  "country": ["US"],
+  "iot_class": "Local Polling",
+  "zip_release": true,
+  "filename": "envirodrip.zip"
+}
