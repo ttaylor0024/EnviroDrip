@@ -16,6 +16,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers import selector  # <-- ADD THIS IMPORT
 
 from .const import (
     CONF_ELEVATION,
@@ -70,7 +71,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     user_input[CONF_ELEVATION] = self.hass.config.elevation or 0
                 
                 info = await validate_input(self.hass, user_input)
-                user_input["zones"] = []  # Will be configured later
                 
                 return self.async_create_entry(title=info["title"], data=user_input)
             except Exception:
@@ -109,12 +109,16 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_zones(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Manage zones."""
+        """Manage zones. This has been updated to correctly add zones."""
         if user_input is not None:
-            # TODO: Implement zone management
-            return self.async_create_entry(title="", data=user_input)
+            # Combine new zone with existing zones
+            new_options = self.config_entry.options.copy()
+            zones = new_options.get("zones", [])
+            zones.append(user_input)
+            new_options["zones"] = zones
+            return self.async_create_entry(title="", data=new_options)
 
-        # For now, show a form to add a zone
+        # Schema for adding a new zone
         zone_schema = vol.Schema(
             {
                 vol.Required("name"): str,
@@ -125,7 +129,8 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Optional("duration", default=15): vol.All(
                     vol.Coerce(int), vol.Range(min=1, max=120)
                 ),
-                vol.Optional("schedule", default="06:00"): cv.time,
+                # This is the corrected line that fixes the crash
+                vol.Optional("schedule"): selector.TimeSelector(),
                 vol.Optional("flow_rate", default=10): cv.positive_float,
             }
         )
